@@ -1,18 +1,18 @@
 # DFR (Dallas Formula Racing) DATA-API
 
-Codebase of the in house data storage and serving API.
+Codebase of the in house data storage and serving API of DallasFormulaRacing.
 
 ## Table of contents
 
 - [DFR (Dallas Formula Racing) DATA-API](#dfr-dallas-formula-racing-data-api)
   - [Table of contents](#table-of-contents)
   - [Current scope of the project](#current-scope-of-the-project)
-  - [Local Development](#local-development)
+  - [Local development](#local-development)
     - [Cloning the repo](#cloning-the-repo)
     - [Setting up the virtual environment](#setting-up-the-virtual-environment)
     - [Making a `.env` file](#making-a-env-file)
     - [Running the API locally](#running-the-api-locally)
-  - [Advanced development notes](#advanced-development-notes)
+  - [Advanced development](#advanced-development)
     - [Testing the Docker image](#testing-the-docker-image)
     - [Building the Docker image](#building-the-docker-image)
     - [Starting a container](#starting-a-container)
@@ -28,7 +28,7 @@ As of current, this API is purely a method of "file storage" for past and up com
 
 Hopefully, in due time, this API will serve as the method for ingesting and distributing all testing data, in various formats, to and from our engineers for their own research purposes. Along with serving as a method for consolidating and differentiating between various forms of data, and testing runs.
 
-## Local Development
+## Local development
 
 **DISCLAIMER**
 
@@ -85,7 +85,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
 
 Once you have a local instance of the API up and running, you can connect to it by visiting [http://localhost:8100](http://localhost:8100) in your browser, or by exploring some of the example code found in the repository under the `examples` folder [here](https://github.com/DallasFormulaRacing/Data-API/tree/main/app).
 
-## Advanced development notes
+## Advanced development
 
 ### Testing the Docker image
 
