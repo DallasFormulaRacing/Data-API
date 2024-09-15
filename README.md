@@ -83,7 +83,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
 * `--port 8100` This flag forces our local instance to be hosted on the **TCP** port 8100, and results in the `:8100` being tacked onto our `localhost` address as mentioned above.
 * `--reload` This flag is used to tell our web server, `uvicorn`, that we want to reload our local instance every time we make a change to its source code automatically, instead of having to manually stop and restart our local instance. (note, this does not reliably monitor for dependency changes, I.E. any changes to your Pipfile, or to your `.env` file)
 
-Once you have a local instance of the API up and running, you can connect to it by visiting [http://localhost:8100](http://localhost:8100) in your browser, or by exploring some of the example code found in the repository under the `examples` folder [here](https://github.com/DallasFormulaRacing/Data-API/tree/main/app).
+Once you have a local instance of the API up and running, you can connect to it by visiting [http://localhost:8100](http://localhost:8100) in your browser, or by exploring some of the example code found in the repository under the `examples` folder [here](https://github.com/DallasFormulaRacing/Data-API/tree/main/examples).
 
 ## Advanced development
 
