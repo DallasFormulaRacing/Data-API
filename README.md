@@ -79,7 +79,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
 * `pipenv run` Is the base command used to "run" any given command following the statement within the installed virtual environment.
 * `uvicorn` Is the web server package that is being used to host the application.
 * `app.main:app` Tells `uvicorn` how to find our code, `app.main` being the path to our source code (the `main.py` file in the `app` folder), and `:app` refers to the `app` defined within.
-* `--host 0.0.0.0` This flag is used to bind the local server to the IP `0.0.0.0`, which is otherwise known as `localhost`. If you ever want to make a request to your local instance, it should be formatted to this address. For example you can open your browser and navigate to `localhost:8100` in your search bar, this will open he `root` or "home" page of the API.
+* `--host 0.0.0.0` This flag is used to bind the local server to the IP `0.0.0.0`, which is otherwise known as `localhost`. If you ever want to make a request to your local instance, it should be formatted to this address. For example you can open your browser and navigate to `localhost:8100` in your search bar, this will open the `root` or "home" page of the API.
 * `--port 8100` This flag forces our local instance to be hosted on the **TCP** port 8100, and results in the `:8100` being tacked onto our `localhost` address as mentioned above.
 * `--reload` This flag is used to tell our web server, `uvicorn`, that we want to reload our local instance every time we make a change to its source code automatically, instead of having to manually stop and restart our local instance. (note, this does not reliably monitor for dependency changes, I.E. any changes to your Pipfile, or to your `.env` file)
 
