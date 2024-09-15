@@ -6,7 +6,7 @@ Codebase of the in house data storage and serving API.
 
 - [DFR (Dallas Formula Racing) DATA-API](#dfr-dallas-formula-racing-data-api)
   - [Table of contents](#table-of-contents)
-    - [Current scope of the project](#current-scope-of-the-project)
+  - [Current scope of the project](#current-scope-of-the-project)
   - [Local Development](#local-development)
     - [Cloning the repo](#cloning-the-repo)
     - [Setting up the virtual environment](#setting-up-the-virtual-environment)
@@ -18,7 +18,7 @@ Codebase of the in house data storage and serving API.
     - [Starting a container](#starting-a-container)
 
 
-### Current scope of the project
+## Current scope of the project
 
 Despite it's simple name, this project aims to be the backbone of all current and future software products made within / for DFR, along with being the "one stop shop" for any and all testing session data and beyond.
 
@@ -36,7 +36,13 @@ This guide assumes you have Python 3.11.X installed, this can be done [here](htt
 
 ### Cloning the repo
 
-As for all projects on github you need to start by cloning the repo using [git](https://git-scm.com/downloads). You can do this by installing [git](https://git-scm.com/downloads) from the provided link, then opening your command line of choice and running the following command, `git clone https://github.com/DallasFormulaRacing/Data-API.git`. This will create a new directory in the location that you ran the command, of which all the content's of the repository will be located.
+As for all projects on github you need to start by cloning the repo using [git](https://git-scm.com/downloads). You can do this by installing [git](https://git-scm.com/downloads) from the provided link, then opening your command line of choice and running the following command.
+
+```shell
+git clone https://github.com/DallasFormulaRacing/Data-API.git
+```
+
+ This will create a new directory in the location that you ran the command, of which all the content's of the repository will be located.
 
 ### Setting up the virtual environment
 
@@ -60,7 +66,15 @@ MONGO_CONNECTION_STRING = "MONGO CONNECTION STRING HERE BETWEEN THE QUOTES"
 
 ### Running the API locally
 
-The "fail proof" method of starting a local instance is by using the command `pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload`. However, if you so choose to 'activate' the virtual environment in your IDE of choice (VS Code and some others do this automatically), then this command is simplified to `uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload` (from within your IDE's command line).
+The "fail proof" method of starting a local instance is by using the following command.
+```shell
+pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
+```
+However, if you so choose to 'activate' the virtual environment in your IDE of choice (VS Code and some others do this automatically), then this command is simplified to the below command. (run this from within your IDE's command line.)
+
+```shell
+uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
+```
 
 * `pipenv run` is the base command used to "run" any given command following the statement within the installed virtual environment.
 * `uvicorn` is the web server package that is being used to host the application.
@@ -85,7 +99,11 @@ This very short guide assumes that you have [Docker](https://www.docker.com/) in
 
 ### Building the Docker image
 
-Just run the command `docker build -t data_api .` in the root directory of your local repository.
+Just run the following command in the root directory of your local repository.
+
+```shell
+docker build -t data_api .
+```
 
 Note, the fist time you run this command it will take some time for [Docker](https://www.docker.com/) to build out the first instance of the API, however subsequent builds will take substantially less time.
 
@@ -93,4 +111,10 @@ Also note that every time you make a change to the source code of the API, it is
 
 ### Starting a container
 
-Again like above, just run the command `docker run -d --name api_container -p 8100:8100 data_api` and your [Docker](https://www.docker.com/) container should start up, at which point you can then access the locally hosted API by connecting to [http://localhost:8100](http://localhost:8100)
+Again like above, just run the following command and your [Docker](https://www.docker.com/) container should start up.
+
+```shell
+docker run -d --name api_container -p 8100:8100 data_api
+```
+
+ At this point you can now access the locally hosted API by connecting to [http://localhost:8100](http://localhost:8100)
