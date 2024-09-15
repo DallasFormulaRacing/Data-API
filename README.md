@@ -11,6 +11,7 @@ Codebase of the in-house data storage and serving API of DallasFormulaRacing.
     - [Cloning the repo](#cloning-the-repo)
     - [Setting up the virtual environment](#setting-up-the-virtual-environment)
     - [Making a `.env` file](#making-a-env-file)
+      - [Example `.env` file](#example-env-file)
     - [Running the API locally](#running-the-api-locally)
   - [Advanced development](#advanced-development)
     - [Testing the Docker image](#testing-the-docker-image)
@@ -42,11 +43,11 @@ As for all projects on GitHub you need to start by cloning the repo using [git](
 git clone https://github.com/DallasFormulaRacing/Data-API.git
 ```
 
- This will create a new directory in the location where you ran the command, of which all the content of the repository will be located.
+ This will create a new directory in the location where you ran the command, of which the content of the repository will be located.
 
 ### Setting up the virtual environment
 
-Unlike all other projects currently maintained by DFR, this project uses [Pipenv](https://pipenv.pypa.io/en/latest/) to create and manage its virtual environment. This means that individuals with little to no experience with developing in a virtual environment, you won't have to worry about managing your `pip` installs and your `virtualenv` separately from each other.
+Unlike all other projects currently maintained by DFR, this project uses [Pipenv](https://pipenv.pypa.io/en/latest/) to create and manage its virtual environment. What this means is you won't have to worry about managing your `pip` installs and your `virtualenv` separately from each other.
 
 To begin, open your command line of choice and execute the following command `pip install --user pipenv`.
 
@@ -60,6 +61,8 @@ First create a new file in the root directory of your local repository instance,
 
 * `MONGO_CONNECTION_STRING` -  The connection string to the MongoDB instance, (if you don't have one, you can host your own instance through MongoDB.)
 
+#### Example `.env` file 
+
 ```
 MONGO_CONNECTION_STRING = "MONGO CONNECTION STRING HERE BETWEEN THE QUOTES"
 ```
@@ -70,7 +73,7 @@ The "fail-proof" method of starting a local instance is by using the following c
 ```shell
 pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
 ```
-However, if you choose to 'activate' the virtual environment in your IDE of choice (VS Code and others do this automatically), then this command is simplified to the below command. (run this from within your IDE's command line.)
+However, if you choose to 'activate' the virtual environment in your IDE of choice (**VS Code** and others do this automatically), then this command is simplified to the below command. (run this from within your IDE's command line.)
 
 ```shell
 uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
