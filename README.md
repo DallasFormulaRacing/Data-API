@@ -188,7 +188,7 @@ When making a request to the `/download` endpoint make sure that you are using t
 
 |header|expected value(s)|required?|
 |:---:|:---:|:---:|
-|`filename`|The name of the file to be found. (**Includes extension**)|<span style="color:red">**Yes**</span>|
+|`filename`|The name of the file to be found. (**Includes extension**)| 	$${\color{red}Yes}$$|
 
 (More headers will be added in the future as more features are added to the endpoint.)
 
