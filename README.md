@@ -13,10 +13,18 @@ Codebase of the in-house data storage and serving API of DallasFormulaRacing.
     - [Making a `.env` file](#making-a-env-file)
       - [Example `.env` file](#example-env-file)
     - [Running the API locally](#running-the-api-locally)
+  - [Logging](#logging)
+    - [`.log` file format](#log-file-format)
   - [Advanced development](#advanced-development)
     - [Testing the Docker image](#testing-the-docker-image)
     - [Building the Docker image](#building-the-docker-image)
     - [Starting a container](#starting-a-container)
+  - [Endpoints](#endpoints)
+    - [`/`](#)
+    - [`/upload`](#upload)
+      - [Status Codes](#status-codes)
+    - [`/download`](#download)
+      - [Status Codes](#status-codes-1)
 
 
 ## Current scope of the project
@@ -88,6 +96,22 @@ uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
 
 Once you have a local instance of the API up and running, you can connect to it by visiting [http://localhost:8100](http://localhost:8100) in your browser, or by exploring some of the example code found in the repository under the `examples` folder [here](https://github.com/DallasFormulaRacing/Data-API/tree/main/examples).
 
+## Logging
+
+All logging for this project is handled with [Python](https://www.python.org/)'s native [logging](https://docs.python.org/3/library/logging.html) library. What this means for newer developers is that all of the output that you would normally see within the console when running the application will instead be saved to a file stored in the `./logs` directory. (If you do not have a `./logs` directory, it is because you have not opened an instance of the API locally yet. Once you do this the directory should be created and all of your logs will be put there.)
+
+### `.log` file format
+
+All `.log` files will follow the naming scheme of `YYYY-MM-DD.log`. Of which within you will find all the information logged on runtime of the API in the following format.
+
+`YYYY-MM-DD HH:MM:SS,MS - LEVEL 0 - LOG CONTENT`
+
+If you ran multiple instances within a single day, or made changes to the API while it was running (assuming you used the `--restart` flag mentioned [here](#running-the-api-locally)), then you will see a breakpoint between each individual instance's log. Which looks like the below example.
+
+```
+YYYY-MM-DD HH:MM:SS,MS - INFO - ---------- STARTING API ----------
+```
+
 ## Advanced development
 
 ### Testing the Docker image
@@ -120,4 +144,69 @@ Again like above, just run the following command and your [Docker](https://www.d
 docker run -d --name api_container -p 8100:8100 data_api
 ```
 
- At this point you can now access the locally hosted API by connecting to [http://localhost:8100](http://localhost:8100)
+At this point you can now access the locally hosted API by connecting to [http://localhost:8100](http://localhost:8100)
+
+
+## Endpoints
+
+If you would like a less verbose, and more technical explanation of the endpoints and their functions, please consult the `/docs` endpoint of the API for the automatically generated [Swagger](https://swagger.io/tools/swagger-ui/) documentation. (Note, the docs on the `/docs` endpoint are **NOT** fully automatically generated, there is still developer defined comments and schemas that provide much of the content of the documentation.)
+
+### `/`
+
+The `/` endpoint, also known as the root endpoint, is used for checking if an instance of the API is alive. If calling this endpoint does not return the below JSON snippet, then the API instance did not properly initialize.
+
+```JSON
+{"Status": "Ok"}
+```
+
+### `/upload`
+
+The `/upload` endpoint should be called when attempting to upload a file to the API for processing/storage within the Mongo database.
+
+It should be noted that a properly formatted request to this endpoint should include both utilization of the **POST** method along with passing a **CSV** file as "file" within the body of the request. An example of how to do this in [Python](https://www.python.org/) can be found [here](https://github.com/DallasFormulaRacing/Data-API/blob/main/examples/example_upload.py). (Due to the nature of FastAPI, it is **REQUIRED** that the file to be uploaded be passed as "file" to match the variable definition found within the function definition for this endpoint [here](https://github.com/DallasFormulaRacing/Data-API/blob/main/app/main.py). This does **NOT** mean that the file needs to be named "file" just that it should be passed as "file" within the request.)
+
+#### Status Codes
+
+This endpoint can return two possible responses, one if the request succeeded, and another if the request failed in some shape or form. Below are example responses of these two responses.
+
+**Status Code 201**
+
+```JSON
+{"message": "Success uploading {UPLOADED FILENAME} to Mongo"}
+```
+
+**Status Code 500**
+
+```JSON
+{"message": "Error uploading or processing file."}
+```
+
+### `/download`
+
+The `/download` endpoint should be called when a user wants to pull a specific dataset from the Mongo database. (It is planned to add future support for multiple filetypes, however, at the moment this endpoint will only return CSV data.)
+
+When making a request to the `/download` endpoint make sure that you are using the **GET** method, along with passing the needed headers (listed below).
+
+|header|expected value(s)|required?|
+|:---:|:---:|:---:|
+|`filename`|The name of the file to be found. (**Includes extension**)|<span style="color:red">**Yes**</span>|
+
+(More headers will be added in the future as more features are added to the endpoint.)
+
+Note, the response formats of this endpoint is highly likely to be subject to change in the near future. Most likely to purely JSON responses instead of strictly serving the file content as the body of the request. (Primarily for constancy sake, and being able to directly download files from a browser is rather useless when you can't easily specify custom headers in a browser.)
+
+#### Status Codes
+
+This endpoint can return two possible responses, one if the request succeeded, and another if the request failed in some shape or form. Below are example responses of these two responses.
+
+**Status Code 200**
+
+If a status code of 200 is thrown then the request succeeded and the body of the response will consist of the requested file's data in **CSV** format. (This may be subject to change in the future as different requirements become apparent.)
+
+(Side note, if you somehow accomplish this within your browser then it will automatically download the file.)
+
+**Status Code 500**
+
+```JSON
+{"message": "Error processing file for download."}
+```
