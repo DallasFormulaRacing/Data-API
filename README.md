@@ -2,7 +2,7 @@
 
 Codebase of the in-house data storage and serving API of [Dallas Formula Racing](https://dallasformularacing.com/).
 
-![](https://img.shields.io/github/last-commit/DallasFormulaRacing/Data-API/main?label=Last+Updated) ![](https://img.shields.io/github/issues/DallasFormulaRacing/Data-API?label=Issues) ![](https://img.shields.io/github/license/DallasFormulaRacing/Data-API)
+![](https://img.shields.io/github/last-commit/DallasFormulaRacing/Data-API/main?label=Last+Updated) ![](https://img.shields.io/github/issues/DallasFormulaRacing/Data-API?label=Issues) ![](https://img.shields.io/github/license/DallasFormulaRacing/Data-API?label=License)
 
 ## Table of contents
 
