@@ -206,6 +206,12 @@ If a status code of 200 is thrown then the request succeeded and the body of the
 
 (Side note, if you somehow accomplish this within your browser then it will automatically download the file.)
 
+**Status Code 400**
+
+```JSON
+{"message": "Request missing 'filename' in headers."}
+```
+
 **Status Code 500**
 
 ```JSON
