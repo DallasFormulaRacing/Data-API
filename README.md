@@ -11,7 +11,6 @@ Codebase of the in-house data storage and serving API of DallasFormulaRacing.
     - [Cloning the repo](#cloning-the-repo)
     - [Setting up the virtual environment](#setting-up-the-virtual-environment)
     - [Making a `.env` file](#making-a-env-file)
-      - [Example `.env` file](#example-env-file)
     - [Running the API locally](#running-the-api-locally)
   - [Logging](#logging)
     - [`.log` file format](#log-file-format)
@@ -69,9 +68,9 @@ First create a new file in the root directory of your local repository instance,
 
 * `MONGO_CONNECTION_STRING` -  The connection string to the MongoDB instance, (if you don't have one, you can host your own instance through MongoDB.)
 
-#### Example `.env` file 
+**Example `.env` file**
 
-```
+```shell
 MONGO_CONNECTION_STRING = "MONGO CONNECTION STRING HERE BETWEEN THE QUOTES"
 ```
 
@@ -108,7 +107,7 @@ All `.log` files will follow the naming scheme of `YYYY-MM-DD.log`. Of which wit
 
 If you ran multiple instances within a single day, or made changes to the API while it was running (assuming you used the `--restart` flag mentioned [here](#running-the-api-locally)), then you will see a breakpoint between each individual instance's log. Which looks like the below example.
 
-```
+```SHELL
 YYYY-MM-DD HH:MM:SS,MS - INFO - ---------- STARTING API ----------
 ```
 
