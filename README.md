@@ -1,6 +1,11 @@
 # DFR (Dallas Formula Racing) DATA-API
 
-Codebase of the in-house data storage and serving API of DallasFormulaRacing.
+Codebase of the in-house data storage and serving API of [Dallas Formula Racing](https://dallasformularacing.com/).
+
+![](https://img.shields.io/github/last-commit/DallasFormulaRacing/Data-API/main?label=Last+Updated) ![](https://img.shields.io/github/issues/DallasFormulaRacing/Data-API?label=Issues) ![](https://img.shields.io/github/license/DallasFormulaRacing/Data-API)
+
+
+
 
 ## Table of contents
 
@@ -188,7 +193,7 @@ When making a request to the `/download` endpoint make sure that you are using t
 
 |header|expected value(s)|required?|
 |:---:|:---:|:---:|
-|`filename`|The name of the file to be found. (**Includes extension**)| 	$${\color{red}Yes}$$|
+|`filename`|The name of the file to be found. (**Includes extension**)|![](https://img.shields.io/static/v1?label=&message=Yes&color=ff0000)|
 
 (More headers will be added in the future as more features are added to the endpoint.)
 
