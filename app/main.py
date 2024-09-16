@@ -20,11 +20,19 @@ mCollection = mDatabase['data_api']
 
 @app.get('/')
 async def root():
+    """
+    The `/` endpoint, also known as the root endpoint, is used for checking if an instance of the API is alive. If calling this endpoint does not return the below JSON snippet, then the API instance did not properly initialize.
+    """
+
     return {"Status": "Ok"}
 
 
 @app.post("/upload")
 def upload(response: Response, file: UploadFile):
+    """
+    The `/upload` endpoint should be called when attempting to upload a file to the API for processing/storage within the Mongo database.
+    """
+
     try:
         fileDF = pd.read_csv(file.file)
         mongoDict = fileDF.to_dict('records')
@@ -46,9 +54,14 @@ def upload(response: Response, file: UploadFile):
 # download endpoint
 @app.get("/download")
 def download(response: Response, request: Request):
+    """
+    The `/download` endpoint should be called when a user wants to pull a specific dataset from the Mongo database. (It is planned to add future support for multiple filetypes, however, at the moment this endpoint will only return CSV data.)
+    """
+
     try:
         if not 'filename' in request.headers:
-            return {'message': 'Request missing `filename` in headers.'}
+            response.status_code = 400
+            return {'message': 'Request missing \'filename\' in headers.'}
 
         query = {'metadata.filename': request.headers['filename']}
         df = pd.DataFrame(list(mCollection.find(query)))
