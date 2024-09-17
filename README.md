@@ -173,13 +173,17 @@ This endpoint can return two possible responses, one if the request succeeded, a
 **Status Code 201**
 
 ```JSON
-{"message": "Success uploading {UPLOADED FILENAME} to Mongo"}
+{
+  "message": "Success uploading {UPLOADED FILENAME} to Mongo"
+}
 ```
 
 **Status Code 500**
 
 ```JSON
-{"message": "Error uploading or processing file."}
+{
+  "message": "Error uploading or processing file."
+}
 ```
 
 ### `/download`
@@ -194,26 +198,24 @@ When making a request to the `/download` endpoint make sure that you are using t
 
 (More headers will be added in the future as more features are added to the endpoint.)
 
-Note, the response formats of this endpoint is highly likely to be subject to change in the near future. Most likely to purely JSON responses instead of strictly serving the file content as the body of the request. (Primarily for constancy sake, and being able to directly download files from a browser is rather useless when you can't easily specify custom headers in a browser.)
-
 #### Status Codes
 
 This endpoint can return two possible responses, one if the request succeeded, and another if the request failed in some shape or form. Below are example responses of these two responses.
 
 **Status Code 200**
 
-If a status code of 200 is thrown then the request succeeded and the body of the response will consist of the requested file's data in **CSV** format. (This may be subject to change in the future as different requirements become apparent.)
-
-(Side note, if you somehow accomplish this within your browser then it will automatically download the file.)
-
-**Status Code 400**
-
 ```JSON
-{"message": "Request missing 'filename' in headers."}
+{
+  "data": string,
+  "format": string
+}
+
 ```
 
 **Status Code 500**
 
 ```JSON
-{"message": "Error processing file for download."}
+{
+  "message": "Error processing file for download."
+}
 ```
