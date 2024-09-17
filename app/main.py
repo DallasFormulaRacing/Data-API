@@ -9,7 +9,7 @@ import pandas as pd
 if not os.path.exists('./logs'):
     os.makedirs('./logs')
 logging.basicConfig(filename=f'./logs/{str(datetime.date.today())}.log', format='%(asctime)s - %(levelname)s - %(message)s', filemode='a')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 logger.info("---------- STARTING API ----------")
