@@ -1,5 +1,7 @@
-from fastapi import FastAPI, UploadFile, Request, status
-from fastapi.responses import Response, FileResponse
+from fastapi import FastAPI, UploadFile, Header
+from fastapi.responses import JSONResponse
+from .schema import statusSchema, exceptionSchema, uploadSchema, downloadSchema
+from typing import List, Optional
 import pymongo, os, logging, datetime
 import pandas as pd
 
@@ -7,28 +9,33 @@ import pandas as pd
 if not os.path.exists('./logs'):
     os.makedirs('./logs')
 logging.basicConfig(filename=f'./logs/{str(datetime.date.today())}.log', format='%(asctime)s - %(levelname)s - %(message)s', filemode='a')
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 logger.info("---------- STARTING API ----------")
 
+
+# start of API code
 app = FastAPI()
 
 mClient = pymongo.MongoClient(os.environ.get("MONGO_CONNECTION_STRING"))
 mDatabase = mClient['cluster0']
 mCollection = mDatabase['data_api']
 
-@app.get('/')
+
+# root endpoint
+@app.get('/', response_model=statusSchema)
 async def root():
     """
     The `/` endpoint, also known as the root endpoint, is used for checking if an instance of the API is alive. If calling this endpoint does not return the below JSON snippet, then the API instance did not properly initialize.
     """
 
-    return {"Status": "Ok"}
+    return JSONResponse(content={"status": "ok", "version": "v0.1.0"}, status_code=200)
 
 
-@app.post("/upload")
-def upload(response: Response, file: UploadFile):
+# upload endpoint
+@app.post("/upload", responses={201: {'model': uploadSchema}, 500: {'model': exceptionSchema}}, status_code=201)
+def upload(file: UploadFile):
     """
     The `/upload` endpoint should be called when attempting to upload a file to the API for processing/storage within the Mongo database.
     """
@@ -42,36 +49,27 @@ def upload(response: Response, file: UploadFile):
 
         mCollection.insert_many(mongoDict)
 
-        response.status_code = 201
-        return {'message': f'Success uploading {file.filename} to Mongo'}
+        return JSONResponse(content={'message': f'Success uploading {file.filename} to Mongo'}, status_code=201)
 
     except Exception as e:
         logger.error('Error uploading or processing file.', exc_info=e)
 
-        response.status_code = 500
-        return {'message': 'Error uploading or processing file.'}
+        return JSONResponse(content={'message': 'Error uploading or processing file.'}, status_code = 500)
+
 
 # download endpoint
-@app.get("/download")
-def download(response: Response, request: Request):
+@app.get("/download", responses={200: {'model': downloadSchema}, 500: {'model': exceptionSchema}})
+def download(filename: Optional[str] = Header(None)):
     """
     The `/download` endpoint should be called when a user wants to pull a specific dataset from the Mongo database. (It is planned to add future support for multiple filetypes, however, at the moment this endpoint will only return CSV data.)
     """
 
     try:
-        if not 'filename' in request.headers:
-            response.status_code = 400
-            return {'message': 'Request missing \'filename\' in headers.'}
+        df = pd.DataFrame(list(mCollection.find({'metadata.filename': filename}, {'_id': 0, 'metadata': 0})))
 
-        query = {'metadata.filename': request.headers['filename']}
-        df = pd.DataFrame(list(mCollection.find(query)))
-
-        # The given media_type will force browsers to automatically download the file with the filename defined in the headers, however this is not
-        # the case for any "code based" solutions. If you want to see how to download files from this API directly, please reference `examples/example_download.py`
-        return Response(content=df.to_csv().encode('utf-8'), media_type='application/octet-stream', headers={'filename': request.headers['filename']}) 
+        return JSONResponse(content={'data': df.to_csv(index=False), 'format': 'csv'})
     
     except Exception as e:
         logger.error('Error processing file for download.', exc_info=e)
 
-        response.status_code = 500
-        return {'message': 'Error processing file for download.'}
+        return JSONResponse(content={'message': 'Error processing file for download.'}, status_code=500)
