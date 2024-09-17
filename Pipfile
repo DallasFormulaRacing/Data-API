@@ -9,6 +9,7 @@ uvicorn = "*"
 python-multipart = "*"
 pymongo = "*"
 pandas = "*"
+pydantic = "*"
 
 [dev-packages]
 
